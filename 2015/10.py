@@ -25,10 +25,9 @@
 
 # Your puzzle answer was 6989950.
 
-
 import re
-line = '1321131112'
-for i in range(40): #50 for part 2
+
+def lookAndSay(line):
     search = re.findall(r'(\d)(\1*)', line) # genero una lista del tipo [(carattere,ripetizioniDiCarattere)] [('1', ''), ('3', ''), ('2', ''), ('1', '1'), ('3', ''), ('1', '11'), ('2', '')]
     line = ''
     # result = list(map(lambda x: x[0]+x[1], search))    # concateno il carattere trovato alle sue ripetizioni per ogni carattere trovato ['1', '3', '2', '11', '3', '111', '2']
@@ -37,4 +36,13 @@ for i in range(40): #50 for part 2
     # oppure
     for c in search:
         line += str(len(c[0]+c[1]))+c[0]
-print(f'Ho {len(line)} cifre.')
+    return line
+
+
+line = '1321131112'
+for i in range(40):
+    line = lookAndSay(line)
+print(f'(Part 1) I now have {len(line)} digits.')
+for i in range(10): # 10 more for part 2
+    line = lookAndSay(line)
+print(f'(Part 2) I now have {len(line)} digits.')
