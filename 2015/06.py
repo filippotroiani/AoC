@@ -112,10 +112,10 @@ with open("input/06.txt", 'r') as file:
     for line in file:
         coordinates = extractCoordinates(line)
         if line[0:2] == 'tu':   # dai primi due caratteri capisco se si tratta di toggle o turn on/off
-            if line[6:7] == 'n': #dal 7 carattere capisco se si tratta di turn on or turn off
-                griglia.turnOn( coordinates[0], coordinates[1], coordinates[2], coordinates[3] )
+            if line[6:7] == 'n': # dal 7 carattere capisco se si tratta di turn on or turn off
+                griglia.turnOn( *coordinates )  # uso l'operatore * per l'unpacking. equivale a (coordinates[0], coordinates[1], coordinates[2], coordinates[3])
             else:
-                griglia.turnOff( coordinates[0], coordinates[1], coordinates[2], coordinates[3] )
+                griglia.turnOff( *coordinates )
         else:
-            griglia.toggle( coordinates[0], coordinates[1], coordinates[2], coordinates[3] )
+            griglia.toggle( *coordinates )
 print(griglia)  # stampo 
