@@ -90,7 +90,7 @@ def fastForward2( fishCount, days ):
         fishCount[6] += petFishes
         fishCount[8] = petFishes
     return fishCount
-
+    
 school = []
 with open('input/06.txt') as file:
     school = list(map(lambda n: int(n), re.findall('(\d),*',file.read())))  # leggo interi dal file e li trasformo in interi con la funzione map
