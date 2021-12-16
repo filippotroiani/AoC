@@ -65,7 +65,7 @@
 
 import re
 
-def fastForward( school, days ):
+def fastForward( school, days ):    # simple but not optimal
     for i in range(days):
         for j in range(len(school)):
             if school[j] == 0:
@@ -74,12 +74,27 @@ def fastForward( school, days ):
             else:
                 school[j] -= 1
 
+def countFishes(school):
+    fishCount = [0]*9
+    for i in range(9):
+        fishCount[i] = school.count(i)
+    return fishCount
+
+def fastForward2( fishCount, days ):
+    for d in range(days):
+        petFishes = fishCount[0]
+        for i in range(len(fishCount) - 1):
+            fishCount[i] = fishCount[i + 1]
+        fishCount[6] += petFishes
+        fishCount[8] = petFishes
+    return fishCount
 school = []
 with open('input/06.txt') as file:
     school = list(map(lambda n: int(n), re.findall('(\d),*',file.read())))  # leggo interi dal file e li trasformo in interi con la funzione map
     first = 80
     second = 256
-    fastForward(school, first)
-    print(f'After 80 days the school has {len(school)} fishes.')
-    fastForward(school, second - first)
-    print(f'After 256 days the school has {len(school)} fishes.')
+    fishCount = countFishes(school)
+    fastForward2(fishCount, first)
+    print(f'After 80 days the school has {sum(fishCount)} fishes.')
+    fastForward2(fishCount, second - first)
+    print(f'After 256 days the school has {sum(fishCount)} fishes.')
