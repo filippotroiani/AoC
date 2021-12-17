@@ -77,20 +77,20 @@ def totalRiskLevel(heighmap):
     for i in range(len(heighmap)):
         for j in range(len(heighmap[0])):
             up = down = left = right = True
-            if i < len(heighmap) - 1 and heighmap[i + 1][j] <= heighmap[i][j]:
+            if i < len(heighmap) - 1 and heighmap[i + 1][j] <= heighmap[i][j]:  # if you're not on the upper edge check down
                 down = False
-            if i > 0 and heighmap[i - 1][j] <= heighmap[i][j]:
+            if i > 0 and heighmap[i - 1][j] <= heighmap[i][j]:  # if you're not on the lower edge check up
                 up = False
-            if j < len(heighmap[0]) - 1 and heighmap[i][j + 1] <= heighmap[i][j]:
+            if j < len(heighmap[0]) - 1 and heighmap[i][j + 1] <= heighmap[i][j]:   # if you're not on the right edge check right
                 right = False
-            if j > 0 and heighmap[i][j - 1] <= heighmap[i][j]:
+            if j > 0 and heighmap[i][j - 1] <= heighmap[i][j]:  # if you're not on the left edge check left
                 left = False
-            if up and down and left and right:
+            if up and down and left and right:  # if every adjacent location has an higher heigh value the location [i][j] is a low point
                 sum += 1 + int(heighmap[i][j])
     return sum
 
-def calculateBasinSize(heighmap,x,y):
-    heighmap[x][y] = '9'
+def calculateBasinSize(heighmap,x,y):   # recursive function: explore adjacent locations if they are part of the basin (heigh != 9)
+    heighmap[x][y] = '9'    # mark the location as checked with a 9 so you'll not check it again
     size = 1
     if x < len(heighmap) - 1 and heighmap[x + 1][y] != '9':
         size += calculateBasinSize(heighmap, x + 1, y)
@@ -106,7 +106,7 @@ def findBasins(heighmap):
     basins = []
     for i in range(len(heighmap)):
         for j in range(len(heighmap[0])):
-            if heighmap[i][j] != '9':
+            if heighmap[i][j] != '9':   # if a location has a heigh lower than 9 it is part of a basin -> explore basin
                 basins.append(calculateBasinSize(heighmap,i,j))
     return basins
 
