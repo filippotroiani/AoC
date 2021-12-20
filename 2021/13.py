@@ -169,5 +169,5 @@ print(f'After the first fold there are {countDots(page)} dots.')
 # part 2
 for i in range(1,len(foldIstructions)):
     fold(page,*foldIstructions[i])
-print(f'After folding the page, the code that appears in the first page is')
+print(f'After all the folding, the code that appears in the first page is')
 displayPage(page)
