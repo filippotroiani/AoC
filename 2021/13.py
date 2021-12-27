@@ -158,10 +158,10 @@ with open('input/13.txt') as file:
             dot = list(map(lambda x: int(x), line.split(',')))
             if not dot[1] < len(page):
                 for i in range(len(page), dot[1] + 1):
-                    page.append(['.']*len(page[0]))
+                    page.append([' ']*len(page[0]))
             if not dot[0] < len(page[0]):
                 for i in range(len(page)):
-                    page[i] += ['.']*(dot[0] + 1-len(page[i]))
+                    page[i] += [' ']*(dot[0] + 1-len(page[i]))
             page[dot[1]][dot[0]] = '#'
 # part 1
 fold(page,*foldIstructions[0])
