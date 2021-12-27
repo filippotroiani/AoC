@@ -225,14 +225,12 @@ def extendCaveMap(grid):
         for k in range(1,5):
             for j in range(initialColNum):
                 grid[i].append(Spot(i, j+initialColNum*k, (grid[i][j].weight+k) if grid[i][j].weight+k < 10 else (grid[i][j].weight+k)%9))
-        # grid[i] += [Spot(i,j+5*k,(grid[i][j].weight+k) if grid[i][j].weight+k < 10 else (grid[i][j].weight+k)%9) for j in range(initialColNum) for k in range(1,5)]
     for k in range(1,5):
         for i in range(initialRowNum):
             newRow = []
             for j in range(len(grid[i])):
                 newRow.append(Spot(i+initialRowNum*k, j, (grid[i][j].weight+k) if grid[i][j].weight+k < 10 else (grid[i][j].weight+k)%9))
             grid.append(newRow)
-            # grid.append([Spot(i+5*k,j,(grid[i][j].weight+k) if grid[i][j].weight+k < 10 else (grid[i][j].weight+k)%9) for j in range(initialColNum*5)])
 
 
 grid = []
