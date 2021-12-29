@@ -77,11 +77,11 @@ def DFS(k, valori, visited = []):   # optimized, it does the sum of the happines
     return max + (valori[k][visited[-2]] + valori[visited[-2]][k] if len(visited) > 1 else 0)
 
 
-with open('input/13.txt') as file:
+with open('./input/13.txt') as file:
     valori = {}
     for line in file:
         l = re.findall('(\w+) would (\w+) (\d+) happiness units by sitting next to (\w+).', line)
-        if l[0][0] not in valori.keys():
+        if l[0][0] not in valori:
             valori[l[0][0]] = {}
         valori[l[0][0]][l[0][3]] = int(l[0][2]) if l[0][1] == 'gain' else - int(l[0][2])
     # part 1

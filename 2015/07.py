@@ -54,7 +54,7 @@ class Circuito:
 
     def inserisciCollegamento(self,op,z,x,y):
         if op == '->' and x.isnumeric(): # se l'operazione è una semplice assegnazione lo inserisco subito tra i valori
-            self.varTable.update( { z: int(x) })
+            self.varTable.update( { z: int(x) })    # equivalent to self.varTable[z] = int(x)
         else:
             self.collegamenti.update({ z: { 'op': op, 'x': x, 'y': y } })
 

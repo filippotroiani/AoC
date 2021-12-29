@@ -180,11 +180,14 @@ with open('input/12.txt') as file:
     for line in file:
         a, b = line.strip().split('-')
         if b != 'start':
-            if a not in concatenateLists.keys():    concatenateLists[a] = []
-            concatenateLists[a].append(b)
+            # if a not in concatenateLists:    concatenateLists[a] = []
+            # concatenateLists[a].append(b)
+            concatenateLists[a] = concatenateLists.get(a,[]) + [b]  # is equivalent to the commented lines above
         if a != 'start':
-            if b not in concatenateLists.keys():    concatenateLists[b] = []
-            concatenateLists[b].append(a)
+            # if b not in concatenateLists:    concatenateLists[b] = []
+            # concatenateLists[b].append(a)
+            concatenateLists[b] = concatenateLists.get(b,[]) + [a]
+
 numOfPaths = visit('start', concatenateLists, [])
 print(f'The paths through the cave system that visit small caves at most once are {numOfPaths}.')
 numOfPaths2 = visit2('start', concatenateLists, [])

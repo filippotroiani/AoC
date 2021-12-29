@@ -96,11 +96,12 @@ def countPairs(template):   # count every pair of element in the template
         adjustCount(pairCounts, template[i : i+2], 1)
     return pairCounts
 
-def adjustCount(pairCounts, pair, count):
-    try:
-        pairCounts[pair] += count
-    except KeyError: # if pair not in pairCounts
-        pairCounts[pair] = count
+def adjustCount(elementCounts, element, count):
+    # try:
+    #     elementCounts[element] += count
+    # except KeyError: # if element not in elementCounts
+    #     elementCounts[element] = count
+    elementCounts[element] = elementCounts.get(element, 0) + count  # elementCounts.get(element, 0) returns elementCounts[element] if element in elementCounts else 0
 
 def countElementsv2(pairCounts, lastElementOfTemplate):
     elementCount = {}
