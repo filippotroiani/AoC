@@ -1,4 +1,4 @@
-# Advent of Code 2021 https://adventofcode.com/2021/day/15
+# Advent of Code 2021 https://adventofcode.com/2021/day/15  ! it's faster without Class
 # --- Day 15: Chiton ---
 
 # You've almost reached the exit of the cave, but the walls are getting closer together. Your submarine can barely still fit, though; the main problem is that the walls of the cave are covered in chitons, and it would be best not to bump any of them.
@@ -113,170 +113,96 @@
 # Your puzzle answer was 2993.
 
 import math
-import os
+from queue import PriorityQueue
 
-class Spot: # using a class. slower for bigger input
-    def __init__(self, x, y, weight):
-        self.x = x
-        self.y = y
-        self.weight = weight
-        self.g = 9999
-        self.h = 0
-        self.f = self.g + self.h
-        self.neighbors = []
-        self.cameFrom = None
-
-    def __repr__(self):
-        return 'Spot object {'f' x: {self.x}, y: {self.y}, weight: {self.weight}, g: {self.g}, neighbors: {self.neighbors}, cameFrom: {self.cameFrom}'+'}'
-
-    def findNeighbors(self, grid): 
-        if self.x < len(grid) - 1:
-            self.neighbors.append(grid[self.x+1][self.y])
-        if self.y < len(grid[0]) - 1:
-            self.neighbors.append(grid[self.x][self.y+1])
-        if self.x > 0:
-            self.neighbors.append(grid[self.x-1][self.y])
-        if self.y > 0:
-            self.neighbors.append(grid[self.x][self.y-1])
-
-    def getCoordinates(self):
-        return (self.x, self.y)
-
-def printGrid(grid,last = (0,0)):
-    os.system('clear')
-    print('last: ',last)
-    path = reconstruct_path(grid[last[0]][last[1]])
-    for i, row in enumerate(grid):
-        for j, element in enumerate(row):
-            if (i,j) == last:
-                mark1 = mark2 = '-'
-            elif (i,j) in path:
-                mark1 = '['
-                mark2 = ']'
-            elif (i,j) in list(map(lambda e: e.getCoordinates(),grid[last[0]][last[1]].neighbors)):
-                mark1 = '('
-                mark2 = ')'
-            else:
-                mark1 = mark2 = ' '
-            print(f'{mark1}{element.weight}{mark2}',end='')
-            
-        print()
-    input()
 
 def heuristic(a, b):
-    return math.dist((a.x, a.y), (b.x, b.y))    # euclidean distance
-    # return abs(a.x - b.x) + abs(a.y - b.y)  # manhattan distance
+    return math.dist((a[0], a[1]), (b[0], b[1]))    # euclidean distance
+    # return abs(a[0] - b[0]) + abs(a[1] - b[1])  # manhattan distance
 
-def reconstruct_path(current):
-    path = []
-    while current.cameFrom is not None:
-       path.insert(0,current.getCoordinates())
-       current = current.cameFrom
-    return path
+def findNeighbors(grid, current):
+    i, j = current
+    neighbors = []
+    if i < len(grid) - 1:
+        neighbors.append((i+1, j))
+    if j < len(grid[0]) - 1:
+        neighbors.append((i, j+1))
+    if i > 0:
+        neighbors.append((i-1, j))
+    if j > 0:
+        neighbors.append((i, j-1))
+    return neighbors
 
 # A* finds a path from start to goal.
 # h is the heuristic function. h(n) estimates the cost to reach goal from node n.
-def A_Star(grid, start, goal):
+def A_Star(grid, start, goal, h):
     # The set of discovered nodes that may need to be (re-)expanded.
     # Initially, only the start node is known.
     # This is usually implemented as a min-heap or priority queue rather than a hash-set.
-    openSet = [start]
+    openSet = PriorityQueue()
+    openSet.put((0,start))
     # For node n, cameFrom[n] is the node immediately preceding it on the cheapest path from start
     # to n currently known.
-    cameFrom = []
+    cameFrom = {start : None}
 
     # For node n, gScore[n] is the cost of the cheapest path from start to n currently known.
     # gScore = map with default value of Infinity
-    start.g = 0
+    gScore = {start: 0} # the start position weight will not be considered
 
     # For node n, fScore[n] = gScore[n] + h(n). fScore[n] represents our current best guess as to
     # how short a path from start to finish can be if it goes through n.
     # fScore = map with default value of Infinity
-    start.f = start.h
-
-    while len(openSet) != 0:
-        
+    
+    while not openSet.empty():
         # This operation can occur in O(1) time if openSet is a min-heap or a priority queue
-        current = openSet[0]
-        for node in openSet[1:]:
-            if node.f < current.f:
-                current = node
-        # printGrid(grid,current.getCoordinates())  # for debug purpose
+        current = openSet.get()[1]
         if current == goal:
-            # print('END')
-            return goal.g   # returns the shortest path's distance. Use reconstruct_path(current) for the path
+            return gScore[goal] # returns the shortest path's distance. Use reconstruct_path(cameFrom,current) for the entire path
 
-        openSet.remove(current)
-        for neighbor in current.neighbors:
-            
+        for neighbor in findNeighbors(grid, current):
             # tentative_gScore is the distance from start to the neighbor through current
-            tentative_gScore = current.g + neighbor.weight
-            if tentative_gScore < neighbor.g:
-                # printGrid(grid,current.getCoordinates())  # for debug purpose
+            tentative_gScore = gScore[current] + grid[neighbor[0]][neighbor[1]]
+            if neighbor not in cameFrom or tentative_gScore < gScore[neighbor]:
                 # This path to neighbor is better than any previous one. Record it!
-                neighbor.cameFrom = current
-                cameFrom.append(current)
-                neighbor.g = tentative_gScore
-                neighbor.f = tentative_gScore + neighbor.h
-                if neighbor not in openSet:
-                    openSet.append(neighbor)
+                cameFrom[neighbor] = current
+                gScore[neighbor] = tentative_gScore
+                fScore = tentative_gScore + h(current, goal)
+                openSet.put((fScore, neighbor))
     # Open set is empty but goal was never reached
     return None   # Failure
 
-def extendCaveMap(grid):    # prepare the cave map for part 2
+def extendCaveMap(grid):
     initialRowNum = len(grid)
     initialColNum = len(grid[0])
     for i in range(initialRowNum):
         for k in range(1,5):
             for j in range(initialColNum):
-                grid[i].append(Spot(i, j+initialColNum*k, (grid[i][j].weight+k) if grid[i][j].weight+k < 10 else (grid[i][j].weight+k)%9))
+                grid[i].append((grid[i][j]+k) if grid[i][j]+k < 10 else (grid[i][j]+k)%9)
     for k in range(1,5):
         for i in range(initialRowNum):
             newRow = []
             for j in range(len(grid[i])):
-                newRow.append(Spot(i+initialRowNum*k, j, (grid[i][j].weight+k) if grid[i][j].weight+k < 10 else (grid[i][j].weight+k)%9))
+                newRow.append((grid[i][j]+k) if grid[i][j]+k < 10 else (grid[i][j]+k)%9)
             grid.append(newRow)
 
-
 caveMap = []
-caveMap2 = []
 with open('input/15.txt') as file:
-    for i, line in enumerate(file):
-        row = []
-        row2 = []
-        for j, ch in enumerate(line.rstrip()):
-            row.append(Spot(i, j, int(ch)))
-            row2.append(Spot(i, j, int(ch)))
-        caveMap.append(row)
-        caveMap2.append(row2)
+    for line in file:
+        caveMap.append([int(ch) for ch in line.rstrip()])
 # PART 1
-# printGrid(caveMap,(0,0))   # for debug purpose
-start = caveMap[0][0]
-start.weight = 0    # the start position risk will not be considered
-goal = caveMap[-1][-1]
-for row in caveMap:
-    for element in row:
-        element.findNeighbors(caveMap)
-        element.h = heuristic(element, goal)
-minRisk = A_Star(caveMap, start, goal)
+start = (0, 0)
+goal = (len(caveMap)-1, len(caveMap)-1)
+minRisk = A_Star(caveMap, start, goal, heuristic)
 if minRisk is not None:
-    # printGrid(caveMap, goal)   # for debug purpose
-    print(f'The lowest total risk of any path through the cave is {minRisk}')
+    print(f'PART 1: The lowest total risk of any path through the cave is {minRisk}')
 else:
     print('FAIL')
-
 # PART 2
-extendCaveMap(caveMap2) # prepare Cave map for part 2
-start = caveMap2[0][0]
-start.weight = 0    # the start position risk will not be considered
-goal = caveMap2[-1][-1]
-for row in caveMap2:
-    for element in row:
-        element.findNeighbors(caveMap2)
-        element.h = heuristic(element, goal)
-minRisk = A_Star(caveMap2, start, goal)
+extendCaveMap(caveMap) # prepare Cave map for part 2
+start = (0, 0)
+goal = (len(caveMap)-1, len(caveMap)-1)
+minRisk = A_Star(caveMap, start, goal, heuristic)
 if minRisk is not None:
-    # printGrid(caveMap2, goal)   # for debug purpose
-    print(f'The lowest total risk of any path through the cave is {minRisk}')
+    print(f'PART 2: The lowest total risk of any path through the cave is {minRisk}')
 else:
     print('FAIL')
