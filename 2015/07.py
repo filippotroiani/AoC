@@ -47,6 +47,8 @@
 
 # Your puzzle answer was 40149.
 
+INPUT_PATH = 'input/07.txt'
+
 class Circuito:
     def __init__(self):
         self.varTable = {}
@@ -117,7 +119,7 @@ class Circuito:
 
 
 circuito = Circuito()
-with open("input/07.txt", 'r') as file:
+with open(INPUT_PATH) as file:
     for line in file:
         circuito.inserisciComando(line.rstrip('\n')) #compongo il circuito. AAA rimuovo il \n da fine stringa
         # circuito.inserisciComando('956 -> b') # parte 2. assegno il valore calcolato precedentemente di a in b e risolvo nuovamente il circuito

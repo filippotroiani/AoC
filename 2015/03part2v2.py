@@ -31,7 +31,7 @@
 
 # Your puzzle answer was 2360.
 
-
+INPUT_PATH = 'input/03.txt'
 class Percorso:
     def __init__(self):    #costruttore
         self.percorso = { '0' :  { '0' :1} }    #inizializza il percorso
@@ -47,7 +47,7 @@ class Percorso:
             self.percorso.update({ x: { y: 1 } })   #non ho trovato x, non sono mai passato da questa posizione
             return False
 
-with open("input/03.txt", 'r') as file:
+with open(INPUT_PATH) as file:
     input=file.readline()
 x1 = 0
 y1 = 0

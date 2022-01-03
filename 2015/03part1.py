@@ -31,8 +31,9 @@
 
 # Your puzzle answer was 2360.
 
+INPUT_PATH = 'input/03.txt'
 
-with open("input/03.txt", 'r') as file:
+with open(INPUT_PATH) as file:
     input=file.readline()
 x=0
 y=0

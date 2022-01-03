@@ -38,8 +38,9 @@
 
 # Your puzzle answer was 1783.
 
+INPUT_PATH = 'input/01.txt'
 
-with open("input/01.txt", 'r') as file:
+with open(INPUT_PATH) as file:
     input=file.readline()
 floor=0
 basement=-1

@@ -26,6 +26,7 @@
 # Your puzzle answer was 6989950.
 
 import re
+INPUT_PATH = 'input/10.txt'
 
 def lookAndSay(line):
     search = re.findall(r'(\d)(\1*)', line) # genero una lista del tipo [(carattere,ripetizioniDiCarattere)] [('1', ''), ('3', ''), ('2', ''), ('1', '1'), ('3', ''), ('1', '11'), ('2', '')]
@@ -38,11 +39,13 @@ def lookAndSay(line):
         line += str(len(c[0]+c[1]))+c[0]
     return line
 
-
-line = '1321131112'
+line = ''
+with open(INPUT_PATH) as f:
+    line = f.read().strip()
+# line = '1321131112'
 for i in range(40):
     line = lookAndSay(line)
-print(f'(Part 1) I now have {len(line)} digits.')
+print(f'(Part 1) After 40 times I have {len(line)} digits.')
 for i in range(10): # 10 more for part 2
     line = lookAndSay(line)
-print(f'(Part 2) I now have {len(line)} digits.')
+print(f'(Part 2) After 50 {len(line)} digits.')

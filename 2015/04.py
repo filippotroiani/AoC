@@ -18,13 +18,18 @@
 # Your puzzle answer was 3938038.
 
 import hashlib
-skey='ckczppom'
+INPUT_PATH = 'input/04.txt'
+PART = 1    # 1 for part 1 or 2 for part 2
+
+skey = ''
+with open(INPUT_PATH) as f:
+    skey = f.read().strip()
+# skey = 'ckczppom'
 for num in range(1,4000000):
-    str2hash=skey+str(num)  #formo la stringa da hashare
+    str2hash = skey+str(num)  # formo la stringa da hashare
     result = hashlib.md5(str2hash.encode())
-    hexresult=result.hexdigest()    #strasformo in esadecimale
+    hexresult = result.hexdigest()    # trasformo in esadecimale
     #print(num,' -> ',hexresult)
-    if '00000'==hexresult[0:5]: #per la prima parte
-    # if '000000'==hexresult[0:6]:  # per la seconda parte
-        print(f'TROVATO!! il numero è: {num}') #117946 #per la seconda parte 3938038
+    if PART == 1 and '00000' == hexresult[0:5] or PART == 2 and '000000'==hexresult[0:6]:
+        print(f'TROVATO!! il numero è: {num}')
         break

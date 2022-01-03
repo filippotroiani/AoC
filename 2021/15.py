@@ -114,6 +114,7 @@
 
 import math
 import os
+INPUT_PATH = 'input/15.txt'
 
 class Spot: # using a class. slower for bigger input
     def __init__(self, x, y, weight):
@@ -240,7 +241,7 @@ def extendCaveMap(grid):    # prepare the cave map for part 2
 
 caveMap = []
 caveMap2 = []
-with open('input/15.txt') as file:
+with open(INPUT_PATH) as file:
     for i, line in enumerate(file):
         row = []
         row2 = []

@@ -120,6 +120,8 @@
 
 # Your puzzle answer was ARHZPCUH.
 
+INPUT_PATH = 'input/13.txt'
+
 def displayPage(page):
     for line in page:
         print(*line)
@@ -148,7 +150,7 @@ def countDots(page):
 
 foldIstructions = []
 page = [[]]
-with open('input/13.txt') as file:
+with open(INPUT_PATH) as file:
     for line in file:
         line = line.strip()
         if line.startswith('fold') or line == '':

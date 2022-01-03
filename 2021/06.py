@@ -66,6 +66,7 @@
 # Your puzzle answer was 1743335992042.
 
 import re
+INPUT_PATH = 'input/06.txt'
 
 def fastForward( school, days ):    # simple but not optimal
     for i in range(days):
@@ -83,7 +84,7 @@ def countFishes(school):
     return fishCount
 
 def fastForward2( fishCount, days ):
-    for d in range(days):
+    for _ in range(days):
         petFishes = fishCount[0]
         for i in range(len(fishCount) - 1):
             fishCount[i] = fishCount[i + 1]
@@ -92,7 +93,7 @@ def fastForward2( fishCount, days ):
     return fishCount
 
 school = []
-with open('input/06.txt') as file:
+with open(INPUT_PATH) as file:
     school = list(map(lambda n: int(n), re.findall('(\d),*',file.read())))  # leggo interi dal file e li trasformo in interi con la funzione map
     first = 80
     second = 256

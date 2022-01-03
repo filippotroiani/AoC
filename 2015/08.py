@@ -39,8 +39,11 @@
 
 
 # lines = ['""','"abc"','"aaa\"aaa"','"\x27"']
+
+INPUT_PATH = 'input/08.txt'
+
 chCount = chCount2 = 0
-with open("input/08.txt", 'r') as file:
+with open(INPUT_PATH) as file:
     for line in file:
         line = line.rstrip('\n')
         chCount += len(line)

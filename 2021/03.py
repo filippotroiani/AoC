@@ -73,6 +73,8 @@
 
 # Your puzzle answer was 482500.
 
+INPUT_PATH = 'input/03.txt'
+
 def count(count1, line):
     for i,c in enumerate(line):
         if c == '1':
@@ -97,7 +99,7 @@ def filterLines(lines, bitCriteria):
         if len(lines) == 1:
             return lines[0]
 
-with open('input/03.txt') as f:
+with open(INPUT_PATH) as f:
     lines = f.readlines()
     count1 = [0]*len(lines[0].strip())
     for line in lines:

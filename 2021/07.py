@@ -61,24 +61,28 @@
 
 # Your puzzle answer was 100220525.
 
-def calculateFuel(crabsPositions, position):    # part 1
+INPUT_PATH = 'input/07.txt'
+PART = 1    # 1 for part 1 or 2 for part 2
+
+def calculateFuelPart1(crabsPositions, position):    # part 1
     sum = 0
     for p in crabsPositions:
         sum += abs(p-position)
     return sum
 
-def calculateFuel2(crabsPositions, position):   # part 2
+def calculateFuelPart2(crabsPositions, position):   # part 2
     sum = 0
     for p in crabsPositions:
         for i in range(1, abs(p-position) + 1):
             sum += i
     return sum
 
-with open('input/07.txt') as file:
+calculateFuel = calculateFuelPart1 if PART == 1 else calculateFuelPart2
+with open(INPUT_PATH) as file:
     crabsPositions = list(map(lambda p: int(p), file.read().split(',')))
-    min = calculateFuel2(crabsPositions, 0)
+    min = calculateFuel(crabsPositions, 0)
     for p in range(1, len(crabsPositions)):
-        fc = calculateFuel2(crabsPositions, p)
+        fc = calculateFuel(crabsPositions, p)
         if fc < min:
             min = fc
     print(f'The minimum fuel consumption is {min}')

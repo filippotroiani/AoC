@@ -73,6 +73,8 @@
 
 # Your puzzle answer was 13158.
 
+INPUT_PATH = 'input/04.txt'
+
 def calculatePoints(board, marked, num):
     points = 0
     for y,row in enumerate(marked):
@@ -120,7 +122,7 @@ def findLoser(boards, markedBoards, boardsPlaying, num):
 
 
 import re
-with open('input/04.txt') as file:
+with open(INPUT_PATH) as file:
     nums = re.findall(r'(\d+)',file.readline())
     boards = []
     markedBoards = []

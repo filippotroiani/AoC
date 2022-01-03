@@ -64,6 +64,8 @@
 
 # Your puzzle answer was 3692219987038.
 
+INPUT_PATH = 'input/14.txt'
+
 def polymerizationv1(template, rules, steps):   # version 1. Not optimized for the end result
     for _ in range(steps):
         i = 1
@@ -113,7 +115,7 @@ def countElementsv2(pairCounts, lastElementOfTemplate):
 
 template = ''
 rules = {}
-with open('input/14.txt') as file:
+with open(INPUT_PATH) as file:
     template = file.readline().strip()
     file.readline()
     for line in file:

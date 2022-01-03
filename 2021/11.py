@@ -1,6 +1,8 @@
 # Advent of Code 11 dic
 # Puzzle at https://adventofcode.com/2021/day/11
 
+INPUT_PATH = 'input/11.txt'
+
 def flash(grid, i, j):
     up = down = False
     if i < len(grid) - 1 :  # if you're not on the upper edge check down
@@ -45,7 +47,7 @@ def step(grid):
 
 
 grid = []
-with open('input/11.txt') as file:
+with open(INPUT_PATH) as file:
     for line in file:
         grid.append(list(map(lambda n: int(n), line.strip())))
 totalFlash = 0

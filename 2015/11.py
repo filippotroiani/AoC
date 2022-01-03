@@ -31,8 +31,9 @@
 
 # Your puzzle answer was hxcaabcc.
 
-
 import re
+INPUT_PATH = 'input/11.txt'
+
 def increment(s):
     if s[-1] in ['h','k','n']:  # avoid the Is, Ls and Os to match the secondo requirement
         return s[:-1]+ chr(ord(s[-1]) + 2)
@@ -53,7 +54,10 @@ def newPassword(psw):
             break
     return psw
 
-psw = 'hxbxwxba'
+psw = ''
+with open(INPUT_PATH) as f:
+    psw = f.read().strip()
+# psw = 'hxbxwxba'
 psw = newPassword(psw)
 print(f'Your next password is {psw}')
 psw = newPassword(psw)

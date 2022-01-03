@@ -31,6 +31,8 @@
 # Your puzzle answer was 68466.
 
 import json
+INPUT_PATH = 'input/12.txt'
+PART = 1    # 1 for part 1 or 2 for part 2
 
 def unwrapObject(o):
     total = 0
@@ -40,11 +42,11 @@ def unwrapObject(o):
         if type(element) == list:
             total += unwrapObject(element)
         if type(element) == dict:
-            total += unwrapObject(element.values()) # part 1
-            # total += unwrapObject(element.values() if 'red' not in element.values() else [])  # part 2
+            # total += unwrapObject(element.values()) # part 1
+            total += unwrapObject(element.values() if PART == 1 or PART ==2 and 'red' not in element.values() else [])
     return total
 
-with open('input/12.txt') as f:
+with open(INPUT_PATH) as f:
     db = json.load(f)
     total = 0
     if 'red' not in db.values():

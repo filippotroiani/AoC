@@ -39,7 +39,7 @@
 # Your puzzle answer was 736.
 
 import re
-
+INPUT_PATH = 'input/09.txt'
 
 def DFS(node, graph, visited = [], mode = 'min'):
     visited.append(node)
@@ -60,7 +60,7 @@ def DFS(node, graph, visited = [], mode = 'min'):
 
 
 graph = {}
-with open('input/09.txt', 'r') as file:
+with open(INPUT_PATH, 'r') as file:
     for line in file:
         route = re.findall('(\w*) to (\w*) = (\d+)',line.strip())
         if route[0][0] not in graph:

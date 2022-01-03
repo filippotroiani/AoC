@@ -103,6 +103,8 @@
 
 # Your puzzle answer was 2377613374.
 
+INPUT_PATH = 'input/10.txt'
+
 def getPoints(c):
     points = 0
     match c:
@@ -152,7 +154,7 @@ def checkLine(line):
         score = score * 5 + getPoints2(c)
     return 'incomplete', score
 
-with open('input/10.txt') as file:
+with open(INPUT_PATH) as file:
     totalErrorScore = 0
     autocompletionScores = []
     for line in file:

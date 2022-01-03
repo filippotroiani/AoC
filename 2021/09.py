@@ -72,6 +72,8 @@
 # Your puzzle answer was 1122700.
 
 import math
+INPUT_PATH = 'input/09.txt'
+
 def totalRiskLevel(heighmap):
     sum = 0
     for i in range(len(heighmap)):
@@ -112,7 +114,7 @@ def findBasins(heighmap):
 
 heighmap = []
 visited = []
-with open('input/09.txt') as file:
+with open(INPUT_PATH) as file:
     for line in file:
         heighmap.append(list(line.strip()))
     print(f'the sum of the risk levels is {totalRiskLevel(heighmap)}.')

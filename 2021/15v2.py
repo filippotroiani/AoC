@@ -115,6 +115,7 @@
 import math
 from queue import PriorityQueue
 
+INPUT_PATH = 'input/15.txt'
 
 def heuristic(a, b):
     return math.dist((a[0], a[1]), (b[0], b[1]))    # euclidean distance
@@ -186,7 +187,7 @@ def extendCaveMap(grid):
             grid.append(newRow)
 
 caveMap = []
-with open('input/15.txt') as file:
+with open(INPUT_PATH) as file:
     for line in file:
         caveMap.append([int(ch) for ch in line.rstrip()])
 # PART 1

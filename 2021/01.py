@@ -75,9 +75,10 @@
 
 # Your puzzle answer was 1217.
 
+INPUT_PATH = 'input/01.txt'
 
 count = count2 = 0
-with open('input/01.txt', 'r') as file:
+with open(INPUT_PATH, 'r') as file:
     meas = int(file.readline())
     tre = meas
     due = int(file.readline())
@@ -94,4 +95,4 @@ with open('input/01.txt', 'r') as file:
             count2 +=1
         
         meas2 = uno + due + tre
-print(f'Parte 1: {count}, Parte 2: {count2}')
+print(f'Part 1: {count}\nPart 2: {count2}')

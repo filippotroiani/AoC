@@ -72,10 +72,11 @@ Consider all of the lines. At how many points do at least two lines overlap?
 Your puzzle answer was 22116. */
 
 const fs = require('fs')
-
+const INPUT_PATH = './input/05.txt'
+const PART = 1
 let ventsLines = []
 
-fs.readFile('./input/05.txt', 'utf8' , (err, data) => {
+fs.readFile(INPUT_PATH, 'utf8' , (err, data) => {
     if (err) {
     console.error(err)
     return
@@ -104,7 +105,7 @@ fs.readFile('./input/05.txt', 'utf8' , (err, data) => {
         else if (line[1]==line[3])  // horizontal line
             for (let i = Math.min(line[0],line[2]); i < Math.max(line[0],line[2]) + 1; i++)
                 diagram[line[1]][i] = diagram[line[1]][i] == '.' ? 1 : diagram[line[1]][i] + 1
-        else { // Part 2 diagonal line
+        else if (PART == 2){ // Part 2 diagonal line
             let x = 0, y = 0, pendenza = 1
             if (line[1] < line[3]){
                 x = line[1]
@@ -136,6 +137,6 @@ fs.readFile('./input/05.txt', 'utf8' , (err, data) => {
         for (let e of row)
             if (e >1)
                 count++
-    console.log('The number of point where at least two lines overlap is '+count)
+    console.log('The number of point where at least two lines overlap is ' + count)
     
 })

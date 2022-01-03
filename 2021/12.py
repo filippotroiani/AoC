@@ -151,6 +151,8 @@
 
 # Your puzzle answer was 108035.
 
+INPUT_PATH = 'input/12.txt'
+
 def visit(node, concatenatedLists, visited):
     if node == 'end':   return 1
     if node not in visited:
@@ -176,7 +178,7 @@ def visit2(node, concatenatedLists, visited, twice = False):
     return count
 
 concatenateLists = {}
-with open('input/12.txt') as file:
+with open(INPUT_PATH) as file:
     for line in file:
         a, b = line.strip().split('-')
         if b != 'start':

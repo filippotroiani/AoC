@@ -130,6 +130,8 @@
 
 # Your puzzle answer was 1023686.
 
+INPUT_PATH = 'input/08.txt'
+
 def part1(outputDigits):
     count = 0
     for digit in outputDigits:
@@ -194,7 +196,7 @@ def decryptOutputValue(encryptedDigits, outputDigits):
     return int(num)
                 
 
-with open('input/08.txt') as file:
+with open(INPUT_PATH) as file:
     count = 0
     sum = 0
     for line in file:

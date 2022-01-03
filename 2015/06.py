@@ -40,6 +40,8 @@
 
 # Your puzzle answer was 15343601.
 
+INPUT_PATH = 'input/06.txt'
+
 class Griglia:
     def __init__(self):
         self.grid = [[0 for col in range(0,1000)] for row in range(1000)]
@@ -108,7 +110,7 @@ def extractCoordinates(line):
 
 griglia = Griglia() # per la prima parte
 # griglia = Griglia2() ### per la seconda parte
-with open("input/06.txt", 'r') as file:
+with open(INPUT_PATH) as file:
     for line in file:
         coordinates = extractCoordinates(line)
         if line[0:2] == 'tu':   # dai primi due caratteri capisco se si tratta di toggle o turn on/off

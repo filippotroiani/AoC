@@ -29,9 +29,11 @@
 
 # Your puzzle answer was 3812909.
 
+INPUT_PATH = 'input/02.txt'
+
 paper=0
 ribbon=0
-with open("input/02.txt", 'r') as file:
+with open(INPUT_PATH) as file:
     for line in file:
         [a,b,c]=line.split('x')
         [l,w,h]=[int(a),int(b),int(c)]

@@ -40,6 +40,8 @@
 
 # Your puzzle answer was 53.
 
+INPUT_PATH = 'input/05.txt'
+
 def isNice1(line):
     chprec = ' '
     vocali = 0
@@ -75,7 +77,7 @@ def isNice2(line):
 
 count1 = 0
 count2 = 0
-with open("input/05.txt", 'r') as file:
+with open(INPUT_PATH) as file:
     for line in file:
         if isNice1(line):
             count1 += 1
