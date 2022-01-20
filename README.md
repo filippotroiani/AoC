@@ -1,3 +1,3 @@
 # AoC
- Advent of Code solutions.
- Puzzles at https://adventofcode.com/
+Advent of Code solutions.  
+Puzzles at [adventofcode.com](https://adventofcode.com/)
