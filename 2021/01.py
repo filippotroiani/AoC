@@ -37,6 +37,7 @@
 # How many measurements are larger than the previous measurement?
 
 # Your puzzle answer was 1266.
+
 # --- Part Two ---
 
 # Considering every single measurement isn't as useful as you expected: there's just too much noise in the data.
@@ -77,22 +78,23 @@
 
 INPUT_PATH = 'input/01.txt'
 
-count = count2 = 0
+def partOne(report) -> int:
+    count = 0
+    for i in range(1, len(report)):
+        if report[i] > report[i-1]:
+            count += 1
+    return count
+
+def partTwo(report) -> int:
+    count = 0
+    for i in range(4, len(report) + 1): # the "+ 1" is important to include the last measure of the report
+        if sum(report[i-3:i]) > sum(report[i-4:i-1]):
+            count += 1
+    return count
+
+resultPartOne = resultPartTwo = 0
 with open(INPUT_PATH, 'r') as file:
-    meas = int(file.readline())
-    tre = meas
-    due = int(file.readline())
-    uno = int(file.readline())
-    meas2 = uno + due + tre
-    for line in file:
-        if int(line) > meas:
-            count +=1
-        meas = int(line)
-        tre = due 
-        due = uno
-        uno = int(line)
-        if uno + due + tre > meas2:
-            count2 +=1
-        
-        meas2 = uno + due + tre
-print(f'Part 1: {count}\nPart 2: {count2}')
+    report = list(map(lambda x: int(x),file.readlines()))
+    resultPartOne = partOne(report)
+    resultPartTwo = partTwo(report)
+print(f'Part 1: {resultPartOne}\nPart 2: {resultPartTwo}')
