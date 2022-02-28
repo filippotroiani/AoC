@@ -76,6 +76,16 @@
 
 # Your puzzle answer was 1217.
 
+import os
+import re
+import time
+import logging
+
+logging.basicConfig(format='%(asctime)s.%(msecs)03d:%(levelname)s:%(name)s:\t%(message)s',
+                    datefmt='%Y-%m-%d %H:%M:%S')
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+SCRIPT_DIR = os.path.dirname(__file__) 
 INPUT_PATH = 'input/01.txt'
 
 def partOne(report) -> int:
@@ -87,14 +97,26 @@ def partOne(report) -> int:
 
 def partTwo(report) -> int:
     count = 0
+    last_three_sum = sum(report[:4])
     for i in range(4, len(report) + 1): # the "+ 1" is important to include the last measure of the report
-        if sum(report[i-3:i]) > sum(report[i-4:i-1]):
+        current_three_sum = sum(report[i-3:i])
+        if current_three_sum > last_three_sum:  # if sum(report[i-3:i]) > sum(report[i-4:i-1]):
             count += 1
+        last_three_sum = current_three_sum
     return count
 
-resultPartOne = resultPartTwo = 0
-with open(INPUT_PATH, 'r') as file:
-    report = list(map(lambda x: int(x),file.readlines()))
+def main():
+    input_file = os.path.join(SCRIPT_DIR, INPUT_PATH)
+    with open(input_file, 'r') as file:
+        report = file.readlines()
+    report = list(map(int,report))
     resultPartOne = partOne(report)
+    logger.info("Part 1 result: %d", resultPartOne)
     resultPartTwo = partTwo(report)
-print(f'Part 1: {resultPartOne}\nPart 2: {resultPartTwo}')
+    logger.info("Part 2 result: %d", resultPartTwo)
+    
+if __name__ == "__main__":
+    t1 = time.perf_counter()
+    main()
+    t2 = time.perf_counter()
+    logger.info("Execution time: %0.4f seconds", t2 - t1)

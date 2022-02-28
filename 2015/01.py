@@ -38,17 +38,23 @@
 
 # Your puzzle answer was 1783.
 
-INPUT_PATH = 'input/01.txt'
+import os
 
-with open(INPUT_PATH) as file:
-    input=file.readline()
-floor=0
-basement=-1
-for i,caracter in enumerate(input,start=1):   #aggiungo l'indice
-    if caracter=='(':
-        floor+=1
-    elif caracter==')':
-        floor-=1
-    if basement==-1 and floor==-1:
-        basement=i
-print(f'final floor: {floor}\nfirst time in the basement at step: {basement}')
+SCRIPT_DIR = os.path.dirname(__file__)
+INPUT_PATH = f'input/{os.path.basename(__file__).split(".")[0]}.txt'
+UP_CHAR = '('
+DOWN_CHAR = ')'
+
+input_file = os.path.join(SCRIPT_DIR, INPUT_PATH)
+with open(input_file, 'r') as file:
+    input = file.readline()
+floor = 0
+basement = None
+for i, caracter in enumerate(input, start = 1):
+    if caracter == UP_CHAR:
+        floor += 1
+    elif caracter == DOWN_CHAR:
+        floor -= 1
+    if basement is None and floor == -1:
+        basement = i
+print(f'Final floor: {floor}\nFirst time in the basement at step: {basement}')

@@ -71,72 +71,70 @@ Consider all of the lines. At how many points do at least two lines overlap?
 
 Your puzzle answer was 22116. */
 
-const fs = require('fs')
-const INPUT_PATH = './input/05.txt'
-const PART = 1
-let ventsLines = []
+const fs = require('fs');
+const INPUT_PATH = './input/05.txt';
+const PART = 1;
+let ventsLines = [];
 
-fs.readFile(INPUT_PATH, 'utf8' , (err, data) => {
-    if (err) {
-    console.error(err)
-    return
-    }
-    const re = /(\d+),(\d+) -> (\d+),(\d+)/g
-    let line
-    while ((line = re.exec(data)) !== null){
-        ventsLines.push([parseInt(line[1]), parseInt(line[2]), parseInt(line[3]), parseInt(line[4])])
-    }
-    let diagram = []
-    let max = Math.max(...ventsLines.map((line) => Math.max(...line))) + 1
-    // Initialization of the diagram
-    for (let i = 0; i < max; i++){
-        diagram[i] = []
-        for (let j = 0; j < max; j++)
-            diagram[i][j] = '.'
-    }
+fs.readFile(INPUT_PATH, 'utf8', (err, data) => {
+	if (err) {
+		console.error(err);
+		return;
+	}
+	const re = /(\d+),(\d+) -> (\d+),(\d+)/g;
+	let line;
+	while ((line = re.exec(data)) !== null) {
+		ventsLines.push([parseInt(line[1]), parseInt(line[2]), parseInt(line[3]), parseInt(line[4])]);
+	}
+	let diagram = [];
+	let max = Math.max(...ventsLines.map((line) => Math.max(...line))) + 1;
+	// Initialize the diagram
+	for (let i = 0; i < max; i++) {
+		diagram[i] = [];
+		for (let j = 0; j < max; j++) diagram[i][j] = '.';
+	}
 
-    for (const line of ventsLines){
-        if (line[0]==line[2])   // vertical line
-            for (let i = Math.min(line[1],line[3]); i < Math.max(line[1],line[3]) + 1; i++){
-                
-                diagram[i][line[0]] = diagram[i][line[0]] == '.' ? 1 : diagram[i][line[0]] + 1
-            }
+	for (const line of ventsLines) {
+		if (line[0] == line[2])
+			// vertical line
+			for (let i = Math.min(line[1], line[3]); i < Math.max(line[1], line[3]) + 1; i++) {
+				diagram[i][line[0]] = diagram[i][line[0]] == '.' ? 1 : diagram[i][line[0]] + 1;
+			}
+		else if (line[1] == line[3])
+			// horizontal line
+			for (let i = Math.min(line[0], line[2]); i < Math.max(line[0], line[2]) + 1; i++)
+				diagram[line[1]][i] = diagram[line[1]][i] == '.' ? 1 : diagram[line[1]][i] + 1;
+		else if (PART == 2) {
+			// Part 2 diagonal line
+			let x = 0,
+				y = 0,
+				pendenza = 1;
+			if (line[1] < line[3]) {
+				x = line[1];
+				y = line[0];
+				if (line[0] > line[2]) pendenza = -1;
+			} else {
+				x = line[3];
+				y = line[2];
+				if (line[0] < line[2]) pendenza = -1;
+			}
 
-        else if (line[1]==line[3])  // horizontal line
-            for (let i = Math.min(line[0],line[2]); i < Math.max(line[0],line[2]) + 1; i++)
-                diagram[line[1]][i] = diagram[line[1]][i] == '.' ? 1 : diagram[line[1]][i] + 1
-        else if (PART == 2){ // Part 2 diagonal line
-            let x = 0, y = 0, pendenza = 1
-            if (line[1] < line[3]){
-                x = line[1]
-                y = line[0]
-                if (line[0] > line[2])
-                    pendenza = -1
-            } else {
-                x = line[3]
-                y = line[2]
-                if (line[0] < line[2])
-                    pendenza = -1
-            }
-            
-            for (let i = 0; i < Math.abs(line[0] - line[2]) + 1; i++){
-                diagram[x + i][y + pendenza*i] = diagram[x + i][y + pendenza*i] == '.' ? 1 : diagram[x + i][y + pendenza*i] + 1}
-        }
-            
-        // print diagram
-        /* for (let row of m){
+			for (let i = 0; i < Math.abs(line[0] - line[2]) + 1; i++) {
+				diagram[x + i][y + pendenza * i] =
+					diagram[x + i][y + pendenza * i] == '.' ? 1 : diagram[x + i][y + pendenza * i] + 1;
+			}
+		}
+
+		// print diagram
+		/* for (let row of m){
         let s =''
         for (let e of row){
             s += e + ' '
         }
         console.log(s)
         } */
-    }
-    let count = 0
-    for (let row of diagram)
-        for (let e of row)
-            if (e >1)
-                count++
-    console.log('The number of point where at least two lines overlap is ' + count)
-    
-})
+	}
+	let count = 0;
+	for (let row of diagram) for (let e of row) if (e > 1) count++;
+	console.log('The number of point where at least two lines overlap is ' + count);
+});

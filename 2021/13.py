@@ -157,7 +157,7 @@ with open(INPUT_PATH) as file:
             if line == '' : continue
             foldIstructions.append([line.split()[2].split('=')[0], int(line.split()[2].split('=')[1])])
         else:
-            dot = list(map(lambda x: int(x), line.split(',')))
+            dot = list(map(int, line.split(',')))
             if not dot[1] < len(page):
                 for i in range(len(page), dot[1] + 1):
                     page.append([' ']*len(page[0]))

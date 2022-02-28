@@ -217,7 +217,7 @@ def calculateYTrajectory(targetYCoordinates,vely) -> list:  # returns a list of 
 
 
 with open(INPUT_PATH, 'r') as file:
-    targetAreaCoordinates = list(map(lambda x: int(x), re.findall(r'(-?\d+)', file.readline())))
+    targetAreaCoordinates = list(map(int, re.findall(r'(-?\d+)', file.readline())))
     # To display the path of a trajectory use the following two instructions. (velX and velY are initial velocity values)
     # targetArea = TargetArea(*targetAreaCoordinates)
     # targetArea.fireProbe(velX,velY)
