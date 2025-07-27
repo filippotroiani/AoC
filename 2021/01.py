@@ -97,10 +97,12 @@ def partOne(report) -> int:
 
 def partTwo(report) -> int:
     count = 0
-    last_three_sum = sum(report[:4])
-    for i in range(4, len(report) + 1): # the "+ 1" is important to include the last measure of the report
-        current_three_sum = sum(report[i-3:i])
-        if current_three_sum > last_three_sum:  # if sum(report[i-3:i]) > sum(report[i-4:i-1]):
+    # start with the sum of the first sliding window (three values)
+    last_three_sum = sum(report[:3])
+    # iterate over the list starting from the fourth element
+    for i in range(3, len(report)):
+        current_three_sum = sum(report[i-2:i+1])
+        if current_three_sum > last_three_sum:
             count += 1
         last_three_sum = current_three_sum
     return count
