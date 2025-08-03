@@ -1,4 +1,4 @@
-# Advent of codde 2021 3 dic
+# Advent of code 2021 3 dic
 # --- Day 3: Binary Diagnostic ---
 
 # The submarine has been making some odd creaking noises, so you ask it to produce a diagnostic report just in case.
@@ -75,12 +75,12 @@
 
 INPUT_PATH = 'input/03.txt'
 
-def count(count1, line):
+def count(count1: list[int], line: str) -> None:
     for i,c in enumerate(line):
         if c == '1':
             count1[i] += 1
 
-def filterLines(lines, bitCriteria):
+def filterLines(lines: list[str], bitCriteria: int) -> str:
     
     for i in range(len(lines[0].strip())):
         unos = 0
@@ -98,6 +98,7 @@ def filterLines(lines, bitCriteria):
             lines = l1 if unos < len(lines)/2 else l0
         if len(lines) == 1:
             return lines[0]
+    return ""
 
 with open(INPUT_PATH) as f:
     lines = f.readlines()

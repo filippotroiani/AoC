@@ -50,10 +50,10 @@ with open(input_file, 'r') as file:
     input = file.readline()
 floor = 0
 basement = None
-for i, caracter in enumerate(input, start = 1):
-    if caracter == UP_CHAR:
+for i, character in enumerate(input, start = 1):
+    if character == UP_CHAR:
         floor += 1
-    elif caracter == DOWN_CHAR:
+    elif character == DOWN_CHAR:
         floor -= 1
     if basement is None and floor == -1:
         basement = i
