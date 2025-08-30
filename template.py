@@ -1,4 +1,4 @@
-# Advent of Code 2021
+# Advent of Code <year>
 import os
 import time
 import logging
