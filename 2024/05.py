@@ -110,46 +110,73 @@ def main():
     input_file_path = os.path.join(SCRIPT_DIR, INPUT_PATH)
     with open(input_file_path, 'r') as file:
         input = file.read()
-    [rules, updates] = input.split('\n\n')
-    rules = [(int(match[0]), int(match[1])) for match in re.findall( r"(\d+)\|(\d+)", rules)]
-    updates = [line.split(',') for line in updates.splitlines()]
-    updates = [[int(element) for element in update] for update in updates]
+    rules, updates = parse_input(input)
     result_part1, result_part2 = solve_puzzle(rules, updates)
     print("Part 1 result: ", result_part1)
     print("Part 2 result: ", result_part2)
 
-def solve_puzzle(rules: list[tuple[int, int]], updates: list[list[int]]) -> tuple[int, int] :
-    rulesDict: dict[int, set[int]] = {}
-    for before, after in rules:
-        if after not in rulesDict:
-            rulesDict[after] = set()
-        rulesDict[after].add(before)
-        
-    result_part1 = result_part2 = 0
+def parse_input(input:str) -> tuple[dict[int,set[int]], list[list[int]]]:
+    """Parses puzzle input.
     
+    Args:
+        input: the whole input file of the puzzle
+    
+    Returns:
+        (rules,updates): The **Rules** dictionary of int,set containing for every page (key) all the pages that should go before and the **Updates** list
+    """
+    [rulesSection, updatesSection] = input.split('\n\n')
+    rules: dict[int,set[int]] = {}
+    for match in re.findall( r"(\d+)\|(\d+)", rulesSection):
+        before = int(match[0])
+        after = int(match[1])
+        if after not in rules:
+            rules[after] = set()
+        rules[after].add(before)
+    updates:list[list[int]] = []
+    for line in updatesSection.splitlines():
+        updates.append(list(map(int, line.split(','))))
+    return rules, updates
+
+def solve_puzzle(rules: dict[int,set[int]], updates: list[list[int]]) -> tuple[int, int] :
+    result_part1 = result_part2 = 0
     for update in updates:
-        if is_valid_update(update, rulesDict):
+        if is_valid_update(update, rules):
             result_part1+=update[update.__len__()  // 2]
         else:
-            fixed_update = fix_update(update, rulesDict)
+            fixed_update = fix_update(update, rules)
             result_part2+=fixed_update[fixed_update.__len__()  // 2]
     
     return result_part1, result_part2
 
-def is_valid_update(update: list[int], rulesDict: dict[int, set[int]]) -> bool:
+def is_valid_update(update: list[int], rules: dict[int, set[int]]) -> bool:
+    """Checks whether an update is valid or not.
+    
+    Args:
+        update: the update to check
+        rules: the rules provided
+    """
     for index,page in enumerate(update[:-1]):
-        if page in rulesDict:
+        if page in rules:
             for subsequent_page in update[index+1:]:
-                if subsequent_page in rulesDict[page]:
+                if subsequent_page in rules[page]:
                     return False
     return True
 
-def fix_update(update: list[int], rulesDict: dict[int, set[int]]) -> list[int]:
+def fix_update(update: list[int], rules: dict[int, set[int]]) -> list[int]:
+    """Fix the update array so that it complies with the rules.
+    
+    Args:
+        update: the update to fix
+        rules: the rules dictionary
+    
+    Returns:
+        the fixed update
+    """
     # modified bubble sort
     for i in range(update.__len__()-1):
         swapped = False
         for j in range(update.__len__()-i-1):
-            if update[j] in rulesDict and update[j+1] in rulesDict[update[j]]:
+            if update[j] in rules and update[j+1] in rules[update[j]]:
                 update[j], update[j+1] = update[j+1], update[j]
                 swapped = True
         if not swapped:
