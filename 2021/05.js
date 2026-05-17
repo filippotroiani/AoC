@@ -72,20 +72,31 @@ Consider all of the lines. At how many points do at least two lines overlap?
 Your puzzle answer was 22116. */
 
 const fs = require('fs');
-const INPUT_PATH = './input/05.txt';
-const PART = 1;
-let ventsLines = [];
+const path = require('path');
+const INPUT_PATH = path.join(__dirname, 'input/05.txt');
 
-fs.readFile(INPUT_PATH, 'utf8', (err, data) => {
-	if (err) {
+async function parseInput(inputFilePath) {
+	try {
+		const data = await fs.promises.readFile(inputFilePath, 'utf-8');
+		let ventsLines = [];
+		const re = /(\d+),(\d+) -> (\d+),(\d+)/g;
+		let line;
+		while ((line = re.exec(data)) !== null) {
+			ventsLines.push([
+				parseInt(line[1]),
+				parseInt(line[2]),
+				parseInt(line[3]),
+				parseInt(line[4]),
+			]);
+		}
+		return ventsLines;
+	} catch (err) {
 		console.error(err);
-		return;
+		exit(-1);
 	}
-	const re = /(\d+),(\d+) -> (\d+),(\d+)/g;
-	let line;
-	while ((line = re.exec(data)) !== null) {
-		ventsLines.push([parseInt(line[1]), parseInt(line[2]), parseInt(line[3]), parseInt(line[4])]);
-	}
+}
+
+function solvePuzzle(ventsLines, checkDiagonals = false) {
 	let diagram = [];
 	let max = Math.max(...ventsLines.map((line) => Math.max(...line))) + 1;
 	// Initialize the diagram
@@ -97,14 +108,24 @@ fs.readFile(INPUT_PATH, 'utf8', (err, data) => {
 	for (const line of ventsLines) {
 		if (line[0] == line[2])
 			// vertical line
-			for (let i = Math.min(line[1], line[3]); i < Math.max(line[1], line[3]) + 1; i++) {
-				diagram[i][line[0]] = diagram[i][line[0]] == '.' ? 1 : diagram[i][line[0]] + 1;
+			for (
+				let i = Math.min(line[1], line[3]);
+				i < Math.max(line[1], line[3]) + 1;
+				i++
+			) {
+				diagram[i][line[0]] =
+					diagram[i][line[0]] == '.' ? 1 : diagram[i][line[0]] + 1;
 			}
 		else if (line[1] == line[3])
 			// horizontal line
-			for (let i = Math.min(line[0], line[2]); i < Math.max(line[0], line[2]) + 1; i++)
-				diagram[line[1]][i] = diagram[line[1]][i] == '.' ? 1 : diagram[line[1]][i] + 1;
-		else if (PART == 2) {
+			for (
+				let i = Math.min(line[0], line[2]);
+				i < Math.max(line[0], line[2]) + 1;
+				i++
+			)
+				diagram[line[1]][i] =
+					diagram[line[1]][i] == '.' ? 1 : diagram[line[1]][i] + 1;
+		else if (checkDiagonals) {
 			// Part 2 diagonal line
 			let x = 0,
 				y = 0,
@@ -121,20 +142,41 @@ fs.readFile(INPUT_PATH, 'utf8', (err, data) => {
 
 			for (let i = 0; i < Math.abs(line[0] - line[2]) + 1; i++) {
 				diagram[x + i][y + pendenza * i] =
-					diagram[x + i][y + pendenza * i] == '.' ? 1 : diagram[x + i][y + pendenza * i] + 1;
+					diagram[x + i][y + pendenza * i] == '.'
+						? 1
+						: diagram[x + i][y + pendenza * i] + 1;
 			}
 		}
-
-		// print diagram
-		/* for (let row of m){
-        let s =''
-        for (let e of row){
-            s += e + ' '
-        }
-        console.log(s)
-        } */
 	}
+	// printDiagram(diagram);
 	let count = 0;
 	for (let row of diagram) for (let e of row) if (e > 1) count++;
-	console.log('The number of point where at least two lines overlap is ' + count);
-});
+	return count;
+}
+
+function printDiagram(diagram) {
+	// print diagram
+	for (let row of diagram) {
+		let s = '';
+		for (let e of row) {
+			s += e;
+		}
+		console.log(s);
+	}
+}
+
+async function main() {
+	let ventsLines = await parseInput(INPUT_PATH);
+	const part1Result = solvePuzzle(ventsLines);
+	console.log(
+		'Part1: The number of point where at least two lines overlap is ',
+		part1Result,
+	);
+	const part2Result = solvePuzzle(ventsLines, true);
+	console.log(
+		'Part2: The number of point where at least two lines overlap is ',
+		part2Result,
+	);
+}
+
+main();
