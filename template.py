@@ -5,6 +5,7 @@
 import logging
 import os
 import time
+import tracemalloc
 
 
 logging.basicConfig(format='%(asctime)s.%(msecs)03d:%(levelname)s:%(name)s:\t%(message)s',
@@ -24,7 +25,11 @@ def main():
 
 
 if __name__ == '__main__':
+    tracemalloc.start()
     t1 = time.perf_counter()
     main()
     t2 = time.perf_counter()
+    _, peak = tracemalloc.get_traced_memory()
+    tracemalloc.stop()
     logger.info('Execution time: %0.4f seconds', t2 - t1)
+    logger.info('Peak memory usage: %0.2f KB', peak / 1024)
