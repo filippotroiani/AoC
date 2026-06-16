@@ -2,34 +2,19 @@
 """
 
 
-import logging
 import os
-import time
-import tracemalloc
+import utility
 
 
-logging.basicConfig(format='%(asctime)s.%(msecs)03d:%(levelname)s:%(name)s:\t%(message)s',
-                    datefmt='%Y-%m-%d %H:%M:%S')
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
-
-SCRIPT_DIR = os.path.dirname(__file__)
-INPUT_PATH = f'input/{os.path.basename(__file__).split(".")[0][:2]}.txt'  # 'input/<day_number>.txt'
+logger = utility.get_logger(__name__)
 
 
 def main():
-    input_file = os.path.join(SCRIPT_DIR, INPUT_PATH)
+    input_file = utility.input_path(__file__)
     with open(input_file, 'r') as file:
         report = file.readlines()
     print(*report)
 
 
 if __name__ == '__main__':
-    tracemalloc.start()
-    t1 = time.perf_counter()
-    main()
-    t2 = time.perf_counter()
-    _, peak = tracemalloc.get_traced_memory()
-    tracemalloc.stop()
-    logger.info('Execution time: %0.4f seconds', t2 - t1)
-    logger.info('Peak memory usage: %0.2f KB', peak / 1024)
+    utility.monitor_execution(main)
